@@ -1531,7 +1531,7 @@ async def show_group_members(message: types.Message, state: FSMContext):
 
         members_text += (
             f"👤 <b>{first_name}</b> ({username_display})\n"
-            f"🆔 ID: {member['display_id']} | Telegram ID: {member['user_id']}\n"
+            f"🆔 ID: {member['display_id']} | Telegram ID: <code>{member['user_id']}</code>\n"
             f"💳 Платежей: {member['total_payments']} | Последний: {last_payment}\n\n"
         )
 

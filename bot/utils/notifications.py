@@ -11,6 +11,7 @@ from aiogram import Bot
 from bot.config.settings import Settings
 from bot.database.operations import Database
 from bot.utils.helpers import format_date, get_now, format_datetime
+from bot.utils.keyboards import get_user_main_menu
 
 
 class NotificationScheduler:
@@ -158,14 +159,28 @@ class NotificationScheduler:
                         f"и вы можете быть удалены из группы!\n\n"
                         f"🆘 Оплатите СРОЧНО!"
                     )
+                elif days_overdue == 3:
+                     # 3 days overdue - CRITICAL
+                    reminder_text = (
+                        f"❌ <b>КРИТИЧЕСКАЯ СИТУАЦИЯ</b>\n\n"
+                        f"Ваш платёж за Spotify для группы <b>{status.group_name}</b> просрочен на <b>3 дня</b>.\n\n"
+                        f"📅 <b>Срок был:</b> {format_date(status.next_payment_date)}\n"
+                        f"💰 <b>Сумма:</b> {self.settings.bot_default_payment_price} ₸\n\n"
+                        f"💳 <b>Оплата на Kaspi Bank:</b>\n\n"
+                        f"{self.settings.bot_payment_link}\n\n"
+                        f"⚠️ <b>Администратор был уведомлён о вашей задолженности.</b>\n"
+                        f"Вы рискуете быть удалённым из группы в любой момент.\n\n"
+                        f"🆘 <b>ПОЖАЛУЙСТА, ОПЛАТИТЕ НЕМЕДЛЕННО!</b>"
+                    )
                 else:
-                    # Skip if outside 0-2 range (shouldn't happen with query filter)
+                    # Skip if outside 0-3 range (shouldn't happen with query filter)
                     continue
 
                 await self.bot.send_message(
                     chat_id=status.user_id,
                     text=reminder_text,
-                    parse_mode="HTML"
+                    parse_mode="HTML",
+                    reply_markup=get_user_main_menu()
                 )
 
                 self.logger.info(

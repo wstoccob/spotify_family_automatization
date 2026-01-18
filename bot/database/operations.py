@@ -838,7 +838,7 @@ class Database:
                          WHERE user_id = ug.user_id AND group_id = g.group_id 
                          ORDER BY payment_date DESC LIMIT 1),
                         g.next_payment_date
-                    )) BETWEEN CURRENT_DATE - INTERVAL '2 days' AND CURRENT_DATE
+                    )) BETWEEN CURRENT_DATE - INTERVAL '3 days' AND CURRENT_DATE
                     ORDER BY next_payment_date
                     """
                 )
@@ -858,8 +858,8 @@ class Database:
                     # Calculate days overdue (negative means due in future, 0 = today, positive = overdue)
                     days_overdue = (today - next_payment_date).days
 
-                    # Only include users who are 0-2 days overdue
-                    if 0 <= days_overdue <= 2:
+                    # Only include users who are 0-3 days overdue
+                    if 0 <= days_overdue <= 3:
                         months_remaining = 0  # Already due or overdue
 
                         result.append(PaymentStatus(

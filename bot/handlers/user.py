@@ -480,7 +480,8 @@ async def confirm_join_group(callback: types.CallbackQuery, state: FSMContext):
             f"• 📊 Проверять свой статус командой /status\n"
             f"• 📅 Просматривать историю платежей\n\n"
             f"💡 Используйте /help для просмотра всех доступных команд.",
-            parse_mode="Markdown"
+            parse_mode="Markdown",
+            reply_markup=get_user_main_menu()
         )
     else:
         await callback.message.edit_text(
